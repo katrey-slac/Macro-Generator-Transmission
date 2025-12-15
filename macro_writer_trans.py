@@ -18,6 +18,7 @@ def create_trans_macro_file(
     num_loops,
     dark_frequency,
     dark_exposure,
+    dark_images,
     rock_lpx,
     rock_lpy,
     sample_parameters,
@@ -148,7 +149,7 @@ num_images = {num_images}
 
 dark_frequency = {dark_frequency}
 dark_exposure = {dark_exposure}
-dark_num_images = 1
+dark_num_images = {dark_images if dark_frequency !=0 else 0}
 
 # Define list of coordinates (lpx, lpy)
 sample_names = {sample_parameters['sample_names']}

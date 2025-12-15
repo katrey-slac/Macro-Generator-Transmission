@@ -29,6 +29,7 @@ class MacroGeneratorTransmissionGUI:
         self.AXS_var = tk.StringVar()
         self.dark_frequency_var = tk.IntVar()
         self.dark_exposure_var = tk.IntVar()
+        self.dark_images_var = tk.IntVar()
         self.rock_lpx_var = tk.StringVar(value="0")
         self.rock_lpy_var = tk.StringVar(value="0")
         self.camera_vars = {}
@@ -106,7 +107,16 @@ class MacroGeneratorTransmissionGUI:
         frame = tk.LabelFrame(self.root, text="Scan Parameters")
         frame.pack(padx=10, pady=10, fill="x")
 
-        labels = ["Exposure Time (s):", "Sleep Time (s):", "Number of Images:", "Number of Loops:", "Scattering Range:"]
+        # Make left and right columns expand so content stays centered
+        frame.columnconfigure(0, weight=1)  # left spacer
+        frame.columnconfigure(1, weight=0)
+        frame.columnconfigure(2, weight=0)
+        frame.columnconfigure(3, weight=0)
+        frame.columnconfigure(4, weight=0)
+        frame.columnconfigure(5, weight=0)
+        frame.columnconfigure(6, weight=1)  # right spacer
+
+        labels = ["Exposure Time [s]:", "Sleep Time [s]:", "Number of Images:", "Number of Loops:", "Scattering Range:"]
         vars = [self.exposure_time_var, self.sleep_time_var, self.num_images_var, self.num_loops_var, self.AXS_var]
         for i, label in enumerate(labels):
             tk.Label(frame, text=label).grid(row=0, column=i, padx=5)
@@ -124,21 +134,23 @@ class MacroGeneratorTransmissionGUI:
 
         # Dark Collection
         dark_frame = tk.LabelFrame(frame, text="Dark Collection")
-        dark_frame.grid(row=0, column=0, padx=(0,20))
+        dark_frame.grid(row=0, column=0, padx=(0,5))
 
-        tk.Label(dark_frame, text="Take dark data every _ samples:").grid(row=0, column=0, padx=(10,10))
+        tk.Label(dark_frame, text="Take dark data\nevery _ samples:").grid(row=0, column=0, padx=(10,10))
         tk.Entry(dark_frame, textvariable=self.dark_frequency_var, width=10).grid(row=1, column=0, pady=(0,10))
-        tk.Label(dark_frame, text="Dark exposure time (s):").grid(row=0, column=1, padx=(0,10))
+        tk.Label(dark_frame, text="Dark exposure time [s]:").grid(row=0, column=1, padx=(0,10))
         tk.Entry(dark_frame, textvariable=self.dark_exposure_var, width=10).grid(row=1, column=1, pady=(0,10))
+        tk.Label(dark_frame, text=" Number of dark images:").grid(row=0, column=2, padx=(0, 10))
+        tk.Entry(dark_frame, textvariable=self.dark_images_var, width=10).grid(row=1, column=2, pady=(0, 10))
 
         # Rocking
         rock_frame = tk.LabelFrame(frame, text="Rocking")
-        rock_frame.grid(row=0, column=1, padx=(10,0))
+        rock_frame.grid(row=0, column=1, padx=(5,0))
 
-        tk.Label(rock_frame, text="lpx in mm").grid(row=0, column=0, padx=(10,0))
+        tk.Label(rock_frame, text="lpx [mm]").grid(row=0, column=0, padx=(10,0), pady=(10,0))
         tk.Entry(rock_frame, textvariable=self.rock_lpx_var, width=10).grid(row=1, column=0, padx=(10,0), pady=(0,10))
-        tk.Label(rock_frame, text="lpy in mm").grid(row=0, column=1, padx=(20,10))
-        tk.Entry(rock_frame, textvariable=self.rock_lpy_var, width=10).grid(row=1, column=1, padx=(10,10), pady=(0,10))
+        tk.Label(rock_frame, text="lpy [mm]").grid(row=0, column=1, padx=(20,10))
+        tk.Entry(rock_frame, textvariable=self.rock_lpy_var, width=10).grid(row=1, column=1, padx=(10,10), pady=(0,15))
 
     def create_sample_params_section(self):
         frame = tk.LabelFrame(self.root, text="Sample Parameters")
@@ -314,6 +326,7 @@ class MacroGeneratorTransmissionGUI:
             self.num_loops_var.get(),
             self.dark_frequency_var.get(),
             self.dark_exposure_var.get(),
+            self.dark_images_var.get(),
             self.rock_lpx_var.get(),
             self.rock_lpy_var.get(),
             self.sample_parameters,
